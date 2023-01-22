@@ -35,7 +35,6 @@
                     <th>عملیات</th>
                     <th>شماره پیگیری</th>
                     <th>عنوان</th>
-                    <th>محصول</th>
                     <th>اهمیت</th>
                     <th>وضعیت</th>
                     <th>پاسخ</th>
@@ -58,7 +57,6 @@
                         </td>
                         <td>{{$ticket->tracking}}</td>
                         <td style="max-width: 180px;white-space: normal">{{$ticket->title}}</td>
-                        <td style="max-width: 180px;white-space: normal">{{$ticket->learning->product->title}}</td>
                         <td>
                             @if($ticket->priority == 0)
                                 <span class="badge bg-label-warning">کم</span>

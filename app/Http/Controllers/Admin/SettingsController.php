@@ -39,28 +39,10 @@ class SettingsController extends Controller
         return view('admin.views.settings.sms',compact('settings'));
     }
 
-    public function hero(){
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-        $settings = HeroSetting::where('locale',$locale)->first();
-        return view('admin.views.settings.hero',compact('settings'));
-    }
-
     public function about(){
         if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
         $settings = AboutSetting::where('locale',$locale)->first();
         return view('admin.views.settings.about',compact('settings'));
-    }
-
-    public function features(){
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-        $settings = FeaturesSetting::where('locale',$locale)->first();
-        return view('admin.views.settings.features',compact('settings'));
-    }
-
-    public function portfolios(){
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-        $settings = PortfoliosSetting::where('locale',$locale)->first();
-        return view('admin.views.settings.portfolios',compact('settings'));
     }
 
     public function articles(){
@@ -73,12 +55,6 @@ class SettingsController extends Controller
         if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
         $settings = CounterBoxSetting::where('locale',$locale)->first();
         return view('admin.views.settings.counters',compact('settings'));
-    }
-
-    public function events(){
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-        $settings = EventsSetting::where('locale',$locale)->first();
-        return view('admin.views.settings.events',compact('settings'));
     }
 
     public function feedbacks(){
@@ -195,40 +171,6 @@ class SettingsController extends Controller
         return redirect()->back();
     }
 
-    public function updateHero(Request $request){
-        $request->validate([
-            'hero_title' => 'nullable|string|max:255',
-            'hero_subtitle' => 'nullable|string|max:255',
-            'hero_image' => 'nullable|mimes:jpeg,jpg,png,gif',
-            'hero_btn_text'  => 'nullable|string|max:255',
-            'hero_btn_icon'  => 'nullable|string|max:255',
-            'hero_btn_link'  => 'nullable|string|max:255',
-            'hero_play_video_link'  => 'nullable|string|max:255',
-            'hero_box_title'  => 'nullable|string|max:255',
-            'hero_box_text'  => 'nullable|string|max:255',
-            'hero_box_btn_text'  => 'nullable|string|max:255',
-            'hero_box_btn_icon'  => 'nullable|string|max:255',
-            'hero_box_btn_link'  => 'nullable|string|max:255',
-        ]);
-        $inputs = request()->all();
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-
-        // image
-        if ($request->remove_hero_image != null) {
-            $fileUrl = request('remove_hero_image');
-            $this->removeStorageFile($fileUrl);
-            $inputs['hero_image'] = null;
-        }
-        if ($request->hasFile('hero_image')) {
-            $imageFile = $request->file('hero_image');
-            $inputs['hero_image'] = $this->uploadRealFile($imageFile,'settings');
-        }
-        $settings= HeroSetting::where('locale',$locale)->first();
-        $settings->update($inputs);
-        session()->flash('success','تغییرات با موفقیت ذخیره شد.');
-        return redirect()->back();
-    }
-
     public function updateAbout(Request $request){
         $request->validate([
             'about_image' => 'nullable|mimes:jpeg,jpg,png,gif',
@@ -326,57 +268,6 @@ class SettingsController extends Controller
         return redirect()->back();
     }
 
-    public function updateFeatures(Request $request){
-        $request->validate([
-            'features_uptitle' => 'nullable|string|max:255',
-            'features_title' => 'nullable|string|max:255',
-            'features_video_image' => 'nullable|mimes:jpeg,jpg,png,gif',
-            'features_video_link' => 'nullable|string|max:255',
-            'features_item1_title' => 'nullable|string|max:255',
-            'features_item1_text' => 'nullable|string|max:255',
-            'features_item1_icon' => 'nullable|string|max:255',
-            'features_item2_title' => 'nullable|string|max:255',
-            'features_item2_text' => 'nullable|string|max:255',
-            'features_item2_icon' => 'nullable|string|max:255',
-            'features_item3_title' => 'nullable|string|max:255',
-            'features_item3_text' => 'nullable|string|max:255',
-            'features_item3_icon' => 'nullable|string|max:255',
-        ]);
-        $inputs = request()->all();
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-
-        // video image
-        if ($request->remove_features_video_image != null) {
-            $fileUrl = request('remove_features_video_image');
-            $this->removeStorageFile($fileUrl);
-            $inputs['features_video_image'] = null;
-        }
-        if ($request->hasFile('features_video_image')) {
-            $imageFile = $request->file('features_video_image');
-            $inputs['features_video_image'] = $this->uploadRealFile($imageFile,'settings');
-        }
-
-        $settings= FeaturesSetting::where('locale',$locale)->first();
-        $settings->update($inputs);
-        session()->flash('success','تغییرات با موفقیت ذخیره شد.');
-        return redirect()->back();
-    }
-
-    public function updatePortfolios(Request $request){
-        $request->validate([
-            'portfolios_uptitle' => 'nullable|string|max:255',
-            'portfolios_title' => 'nullable|string|max:255',
-            'portfolios_count' => 'nullable|string|max:255',
-        ]);
-        $inputs = request()->all();
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-
-        $settings= PortfoliosSetting::where('locale',$locale)->first();
-        $settings->update($inputs);
-        session()->flash('success','تغییرات با موفقیت ذخیره شد.');
-        return redirect()->back();
-    }
-
     public function updateArticles(Request $request){
         $request->validate([
             'articles_uptitle' => 'nullable|string|max:255',
@@ -415,52 +306,6 @@ class SettingsController extends Controller
         if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
 
         $settings= CounterBoxSetting::where('locale',$locale)->first();
-        $settings->update($inputs);
-        session()->flash('success','تغییرات با موفقیت ذخیره شد.');
-        return redirect()->back();
-    }
-
-    public function updateEvents(Request $request){
-        $request->validate([
-            'event1_title' =>  'nullable|string|max:255',
-            'event1_text' =>  'nullable|string|max:255',
-            'event1_image' =>  'nullable|mimes:jpeg,jpg,png,gif',
-            'event1_btn_text' =>  'nullable|string|max:255',
-            'event1_box_btn_icon' =>  'nullable|string|max:255',
-            'event1_box_btn_link' =>  'nullable|string|max:255',
-            'event2_title' =>  'nullable|string|max:255',
-            'event2_text' =>  'nullable|string|max:255',
-            'event2_image' =>  'nullable|mimes:jpeg,jpg,png,gif',
-            'event2_btn_text' =>  'nullable|string|max:255',
-            'event2_box_btn_icon' =>  'nullable|string|max:255',
-            'event2_box_btn_link' =>  'nullable|string|max:255',
-        ]);
-        $inputs = request()->all();
-        if (session()->has('locale')) $locale = session('locale'); else $locale = 'fa';
-
-        // event1 image
-        if ($request->remove_event1_image != null) {
-            $fileUrl = request('remove_event1_image');
-            $this->removeStorageFile($fileUrl);
-            $inputs['event1_image'] = null;
-        }
-        if ($request->hasFile('event1_image')) {
-            $imageFile = $request->file('event1_image');
-            $inputs['event1_image'] = $this->uploadRealFile($imageFile,'settings');
-        }
-
-        // event2 image
-        if ($request->remove_event2_image != null) {
-            $fileUrl = request('remove_event2_image');
-            $this->removeStorageFile($fileUrl);
-            $inputs['event2_image'] = null;
-        }
-        if ($request->hasFile('event2_image')) {
-            $imageFile = $request->file('event2_image');
-            $inputs['event2_image'] = $this->uploadRealFile($imageFile,'settings');
-        }
-
-        $settings= EventsSetting::where('locale',$locale)->first();
         $settings->update($inputs);
         session()->flash('success','تغییرات با موفقیت ذخیره شد.');
         return redirect()->back();

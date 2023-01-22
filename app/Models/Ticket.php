@@ -70,9 +70,4 @@ class Ticket extends Model
     {
         return $this->belongsTo(Admin::class);
     }
-
-    public function learning()
-    {
-        return $this->belongsTo(Learning::class, 'learning_id');
-    }
 }

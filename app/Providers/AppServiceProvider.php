@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::defaultView('admin.includes.paginator');
-        Schema::defaultStringLength(191);
+        Schema::defaultStringLength(1001);
     }
 }

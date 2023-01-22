@@ -3,26 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\PortfolioCategory;
+use App\Models\ProductCategory;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use ProtoneMedia\LaravelCrossEloquentSearch\Search;
 
-class PortfolioCategoriesController extends Controller
+class ProductCategoriesController extends Controller
 {
 
     public function index()
     {
-        $categories = PortfolioCategory::latest()->paginate(20);
-        return view('admin.views.portfolio_categories.index',compact('categories'));
+        $categories = ProductCategory::latest()->paginate(20);
+        return view('admin.views.product_categories.index',compact('categories'));
     }
-
 
     public function create()
     {
-        return view('admin.views.portfolio_categories.create');
+        return view('admin.views.product_categories.create');
     }
-
 
     public function store(Request $request)
     {
@@ -34,12 +32,12 @@ class PortfolioCategoriesController extends Controller
 
         // generate slug from user input
         if ($request->has('slug') && !empty($request->slug)){
-            $inputs['slug'] = SlugService::createSlug(PortfolioCategory::class, 'slug', $request->slug);
+            $inputs['slug'] = SlugService::createSlug(ProductCategory::class, 'slug', $request->slug);
         }
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $inputs['image'] = $this->uploadRealFile($image,'portfolio-categories');
+            $inputs['image'] = $this->uploadRealFile($image,'product-categories');
         }
 
         $inputs['featured'] = false;
@@ -47,20 +45,20 @@ class PortfolioCategoriesController extends Controller
             $inputs['featured'] = true;
         }
 
-        PortfolioCategory::create($inputs);
+        ProductCategory::create($inputs);
 
         session()->flash('success','دسته بندی با موفقیت ایجاد شد.');
-        return redirect(route('portfolio-categories.index'));
+        return redirect(route('product-categories.index'));
     }
 
 
-    public function edit(PortfolioCategory $portfolioCategory)
+    public function edit(ProductCategory $productCategory)
     {
-        return view('admin.views.portfolio_categories.edit',compact('portfolioCategory'));
+        return view('admin.views.product_categories.edit',compact('productCategory'));
     }
 
 
-    public function update(Request $request, PortfolioCategory $portfolioCategory)
+    public function update(Request $request, ProductCategory $productCategory)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -69,8 +67,8 @@ class PortfolioCategoriesController extends Controller
         ]);
 
         // update slug
-        if ($request->slug != $portfolioCategory->slug){
-            $inputs['slug'] = SlugService::createSlug(PortfolioCategory::class, 'slug', str_replace('/','',$request->slug));
+        if ($request->slug != $productCategory->slug){
+            $inputs['slug'] = SlugService::createSlug(ProductCategory::class, 'slug', str_replace('/','',$request->slug));
         }
 
         $inputs = $request->all();
@@ -83,7 +81,7 @@ class PortfolioCategoriesController extends Controller
 
         if ($request->hasFile('image')) {
             $image      = $request->file('image');
-            $inputs['image'] = $this->uploadRealFile($image,'post-category');
+            $inputs['image'] = $this->uploadRealFile($image,'product-category');
         }
 
         $inputs['featured'] = false;
@@ -91,29 +89,28 @@ class PortfolioCategoriesController extends Controller
             $inputs['featured'] = true;
         }
 
-        $portfolioCategory->update($inputs);
+        $productCategory->update($inputs);
 
         session()->flash('success','تغییرات با موفقیت ذخیره شد.');
-        return redirect(route('portfolio-categories.index'));
+        return redirect(route('product-categories.index'));
     }
 
-
-    public function destroy(PortfolioCategory $portfolioCategory)
+    public function destroy(ProductCategory $productCategory)
     {
-        $name = $portfolioCategory->title;
-        $this->removeStorageFile($portfolioCategory->image);
-        $portfolioCategory->delete();
+        $name = $productCategory->title;
+        $this->removeStorageFile($productCategory->image);
+        $productCategory->delete();
         session()->flash('success','دسته بندی ('.$name.') با موفقیت حذف شد');
-        return redirect(route('portfolio-categories.index'));
+        return redirect(route('product-categories.index'));
     }
 
     public function search(){
         $query = request('query');
-        $categories = Search::add(PortfolioCategory::class,'title')
+        $categories = Search::add(ProductCategory::class,'title')
             ->dontParseTerm()
             ->beginWithWildcard()
             ->paginate(20)->search($query);
         $categories->appends(array('query' => $query))->links();
-        return view('admin.views.portfolio_categories.index',compact('categories','query'));
+        return view('admin.views.product_categories.index',compact('categories','query'));
     }
 }

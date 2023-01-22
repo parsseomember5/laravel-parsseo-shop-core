@@ -1,21 +1,27 @@
 @extends('admin.layouts.panel')
 @section('content')
     <h4 class="py-3 breadcrumb-wrapper mb-4">
-        <span class="text-muted fw-light">دسته بندی نمونه کار ها /</span> دسته جدید
+        <span class="text-muted fw-light">دسته بندی مقالات /</span> دسته جدید
     </h4>
 
     @include('admin.includes.alerts',['class' => 'mb-3'])
     <div class="card mb-4">
         <div class="card-body">
-            <form action="{{route('portfolio-categories.store')}}" method="post" enctype="multipart/form-data" class="row">
+            <form action="{{route('product-categories.store')}}" method="post" enctype="multipart/form-data" class="row">
                 @csrf
-                <div class="mb-3 col-lg-6">
+                <div class="mb-3 col-lg-4">
                     <label class="form-label" for="title">عنوان (ضروری)</label>
                     <input type="text" class="form-control" id="title" name="title" value="{{old('title')}}">
                 </div>
-                <div class="mb-3 col-lg-6">
+
+                <div class="mb-3 col-lg-4">
                     <label class="form-label" for="slug">نامک</label>
                     <input type="text" class="form-control" id="slug" name="slug" value="{{old('slug')}}">
+                </div>
+
+                <div class="mb-3 col-lg-4">
+                    <label for="image" class="form-label">تصویر دسته</label>
+                    <input class="form-control" type="file" id="image" name="image">
                 </div>
 
                 {{-- description --}}

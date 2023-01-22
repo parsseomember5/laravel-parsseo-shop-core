@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\PortfolioCategoriesController;
 use App\Http\Controllers\Admin\PortfoliosController;
 use App\Http\Controllers\Admin\PostCategoriesController;
 use App\Http\Controllers\Admin\PostsController;
+use App\Http\Controllers\Admin\ProductCategoriesController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -165,25 +166,13 @@ Route::prefix('admin')->group(function (){
         Route::get('tags/search',[TagsController::class,'search'])->name('tags.search');
         Route::resource('tags',TagsController::class);
 
-        // chapters
-        Route::get('chapters/search',[ChaptersController::class,'search'])->name('chapters.search');
-        Route::post('chapters/parents',[ChaptersController::class,'getParents'])->name('chapters.parents');
-        Route::resource('chapters',ChaptersController::class);
-
         // post categories
         Route::get('post-categories/search',[PostCategoriesController::class,'search'])->name('post-categories.search');
         Route::resource('post-categories',PostCategoriesController::class);
 
-        // portfolios
-        Route::post('portfolios/get-translations',[PortfoliosController::class,'getTranslations']);
-        Route::get('portfolios/trash',[PortfoliosController::class,'trash'])->name('portfolios.trash');
-        Route::post('portfolios/empty/trash',[PortfoliosController::class,'emptyTrash'])->name('portfolios.trash.empty');
-        Route::post('portfolios/restore/{id}',[PortfoliosController::class,'restore'])->name('portfolios.restore');
-        Route::post('portfolios/force-delete',[PortfoliosController::class,'forceDelete'])->name('portfolios.delete.force');
-        Route::get('portfolios/search/trash',[PortfoliosController::class,'searchTrash'])->name('portfolios.search.trash');
-        Route::get('portfolios/search',[PortfoliosController::class,'search'])->name('portfolios.search');
-        Route::resource('portfolios',PortfoliosController::class);
-        Route::post('portfolios/ajax-delete',[PortfoliosController::class,'ajaxDelete']);
+        // product categories
+        Route::get('product-categories/search',[ProductCategoriesController::class,'search'])->name('product-categories.search');
+        Route::resource('product-categories',ProductCategoriesController::class);
 
         // orders
         Route::get('orders/trash',[OrdersController::class,'trash'])->name('orders.trash');
@@ -194,10 +183,6 @@ Route::prefix('admin')->group(function (){
         Route::get('orders/search',[OrdersController::class,'search'])->name('orders.search');
         Route::resource('orders',OrdersController::class);
         Route::post('orders/ajax-delete',[OrdersController::class,'ajaxDelete']);
-
-        // portfolio categories
-        Route::get('portfolio-categories/search',[PortfolioCategoriesController::class,'search'])->name('portfolio-categories.search');
-        Route::resource('portfolio-categories',PortfolioCategoriesController::class);
 
         // pages
         Route::get('pages/trash',[PagesController::class,'trash'])->name('pages.trash');
@@ -217,20 +202,12 @@ Route::prefix('admin')->group(function (){
             Route::post('gateways/update',[SettingsController::class,'updateGateways'])->name('settings.gateways_update');
             Route::get('sms',[SettingsController::class,'sms'])->name('settings.sms');
             Route::post('sms/update',[SettingsController::class,'updateSMS'])->name('settings.sms_update');
-            Route::get('portfolios',[SettingsController::class,'portfolios'])->name('settings.portfolios');
-            Route::post('portfolios/update',[SettingsController::class,'updatePortfolios'])->name('settings.portfolios_update');
-            Route::get('features',[SettingsController::class,'features'])->name('settings.features');
-            Route::post('features/update',[SettingsController::class,'updateFeatures'])->name('settings.features_update');
-            Route::get('hero',[SettingsController::class,'hero'])->name('settings.hero');
-            Route::post('hero/update',[SettingsController::class,'updateHero'])->name('settings.hero_update');
             Route::get('about',[SettingsController::class,'about'])->name('settings.about');
             Route::post('about/update',[SettingsController::class,'updateAbout'])->name('settings.about_update');
             Route::get('articles',[SettingsController::class,'articles'])->name('settings.articles');
             Route::post('articles/update',[SettingsController::class,'updateArticles'])->name('settings.articles_update');
             Route::get('counters',[SettingsController::class,'counters'])->name('settings.counters');
             Route::post('counters/update',[SettingsController::class,'updateCounters'])->name('settings.counters_update');
-            Route::get('events',[SettingsController::class,'events'])->name('settings.events');
-            Route::post('events/update',[SettingsController::class,'updateEvents'])->name('settings.events_update');
             Route::get('feedbacks',[SettingsController::class,'feedbacks'])->name('settings.feedbacks');
             Route::post('feedbacks/update',[SettingsController::class,'updateFeedbacks'])->name('settings.feedbacks_update');
             Route::get('contact-us',[SettingsController::class,'contactUs'])->name('settings.contact_us');
@@ -243,14 +220,6 @@ Route::prefix('admin')->group(function (){
         Route::post('feedbacks/get-translations',[FeedbacksController::class,'getTranslations']);
         Route::get('feedbacks/search',[FeedbacksController::class,'search'])->name('feedbacks.search');
         Route::resource('feedbacks',FeedbacksController::class);
-
-        // logos
-        Route::get('logos/search',[LogosController::class,'search'])->name('logos.search');
-        Route::resource('logos',LogosController::class);
-
-        // learnings
-        Route::get('learnings/search',[LearningsController::class,'search'])->name('learnings.search');
-        Route::resource('learnings',LearningsController::class);
 
         // menus
         Route::get('menus/search',[MenusController::class,'search'])->name('menus.search');

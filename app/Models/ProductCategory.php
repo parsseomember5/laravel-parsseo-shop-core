@@ -5,7 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
-class PortfolioCategory extends Model
+class ProductCategory extends Model
 {
     use Sluggable;
 
@@ -16,7 +16,7 @@ class PortfolioCategory extends Model
 
     protected $fillable = [
         'title',
-//        'image',
+        'image',
         'slug',
         'featured',
         'meta_description',
@@ -43,8 +43,8 @@ class PortfolioCategory extends Model
         return asset('images/default.jpg');
     }
 
-    public function portfolios(){
-        return $this->belongsToMany(Portfolio::class,'portfolio_category','category_id','portfolio_id');
+    public function products()
+    {
+        return $this->belongsToMany(Product::class,'product_category','category_id','product_id');
     }
-
 }
